@@ -1,6 +1,11 @@
 package com.example.demo.Service;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.UserRepository;
+import com.example.demo.Service.InstructionalVideoService;
+import com.example.demo.Entity.YogaClass;
+import com.example.demo.Service.YogaClassService;
+
+
 
 @Service
 public class UserService {
@@ -22,24 +32,57 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    // Method to fetch all users
+public List<User> getAllUsers() {
+    return userRepository.findAll();
+}
+
+public Page<User> getAllUsers(int page, int size, Sort sort) {
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+
+
+    return userRepository.findAll(pageable);
+}
+
+
+    public List<User> getUsersByLastName(String lastName) {
+        return userRepository.findByLastName(lastName);
     }
 
     public User updateUser(Long id, User updatedUser) {
+        updatedUser.setId(id);
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
-            updatedUser.setId(id);
             return userRepository.save(updatedUser);
         }
         return null;
     }
 
-    public boolean deleteUser(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return true;
+    @Autowired
+    private InstructionalVideoService instructionalVideoService;
+
+@Autowired
+private YogaClassService yogaClassService;
+
+public boolean deleteUser(Long id) {
+
+    if (userRepository.existsById(id)) {
+        // Delete associated yoga classes
+        List<YogaClass> yogaClasses = yogaClassService.getYogaClassesByUserId(id);
+        for (YogaClass yogaClass : yogaClasses) {
+            yogaClassService.deleteYogaClass(yogaClass.getId());
         }
-        return false;
+        
+        // Delete associated instructional videos
+        instructionalVideoService.deleteByYogaClassId(id);
+        
+        userRepository.deleteById(id);
+        return true;
     }
+    return false;
+}
+
+
+
 }

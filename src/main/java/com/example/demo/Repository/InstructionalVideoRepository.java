@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InstructionalVideoRepository extends JpaRepository<InstructionalVideo, Long> {
+    void deleteByYogaClassId(Long yogaClassId);
+
 }

@@ -10,8 +10,14 @@ import com.example.demo.Repository.InstructionalVideoRepository;
 
 @Service
 public class InstructionalVideoService {
+    
     @Autowired
     private InstructionalVideoRepository instructionalVideoRepository;
+
+    public void deleteByYogaClassId(Long yogaClassId) {
+        // Logic to delete instructional videos by yoga class ID
+        instructionalVideoRepository.deleteByYogaClassId(yogaClassId);
+    }
 
     public InstructionalVideo createInstructionalVideo(InstructionalVideo video) {
         return instructionalVideoRepository.save(video);

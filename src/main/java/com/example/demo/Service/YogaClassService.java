@@ -10,6 +10,12 @@ import com.example.demo.Repository.YogaClassRepository;
 
 @Service
 public class YogaClassService {
+    
+    public List<YogaClass> getYogaClassesByUserId(Long userId) {
+        // Logic to retrieve yoga classes by user ID
+        return yogaClassRepository.findByUserId(userId);
+    }
+
     @Autowired
     private YogaClassRepository yogaClassRepository;
 
