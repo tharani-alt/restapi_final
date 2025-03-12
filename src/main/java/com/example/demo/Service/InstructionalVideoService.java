@@ -1,49 +1,40 @@
 package com.example.demo.Service;
 
-import java.util.List;
-
+import com.example.demo.Entity.InstructionalVideo;
+import com.example.demo.Repository.InstructionalVideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Entity.InstructionalVideo;
-import com.example.demo.Repository.InstructionalVideoRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstructionalVideoService {
-    
+
     @Autowired
     private InstructionalVideoRepository instructionalVideoRepository;
 
-    public void deleteByYogaClassId(Long yogaClassId) {
-        // Logic to delete instructional videos by yoga class ID
-        instructionalVideoRepository.deleteByYogaClassId(yogaClassId);
-    }
-
-    public InstructionalVideo createInstructionalVideo(InstructionalVideo video) {
+    public InstructionalVideo createVideo(InstructionalVideo video) {
         return instructionalVideoRepository.save(video);
     }
 
-    public InstructionalVideo getInstructionalVideoById(Long id) {
-        return instructionalVideoRepository.findById(id).orElse(null);
-    }
-
-    public List<InstructionalVideo> getAllInstructionalVideos() {
+    public List<InstructionalVideo> getAllVideos() {
         return instructionalVideoRepository.findAll();
     }
 
-    public InstructionalVideo updateInstructionalVideo(Long id, InstructionalVideo updatedVideo) {
-        if (instructionalVideoRepository.existsById(id)) {
-            updatedVideo.setId(id);
-            return instructionalVideoRepository.save(updatedVideo);
-        }
-        return null;
+    public Optional<InstructionalVideo> getVideoById(Long id) {
+        return instructionalVideoRepository.findById(id);
     }
 
-    public boolean deleteInstructionalVideo(Long id) {
-        if (instructionalVideoRepository.existsById(id)) {
-            instructionalVideoRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public InstructionalVideo updateVideo(Long id, InstructionalVideo videoDetails) {
+        InstructionalVideo existingVideo = instructionalVideoRepository.findById(id).orElseThrow();
+        existingVideo.setSessionTiming(videoDetails.getSessionTiming());
+        existingVideo.setInstructorName(videoDetails.getInstructorName());
+        existingVideo.setVideoLink(videoDetails.getVideoLink());
+        return instructionalVideoRepository.save(existingVideo);
+    }
+
+    public void deleteVideo(Long id) {
+        instructionalVideoRepository.deleteById(id);
     }
 }

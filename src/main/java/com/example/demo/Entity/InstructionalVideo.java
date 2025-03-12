@@ -1,13 +1,10 @@
 package com.example.demo.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +20,13 @@ public class InstructionalVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String url;
-    
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    private User user;
+    @Column(nullable = false)
+    private String instructorName;
 
-    @ManyToOne
-    @JoinColumn(name = "yoga_class_id", nullable = false)
-    private YogaClass yogaClass;
+    @Column(nullable = false)
+    private String videoLink;
+
+    @Column(nullable = false)
+    private String sessionTiming;
+
 }

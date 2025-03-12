@@ -13,11 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.UserRepository;
-import com.example.demo.Service.InstructionalVideoService;
-import com.example.demo.Entity.YogaClass;
-import com.example.demo.Service.YogaClassService;
-
-
 
 @Service
 public class UserService {
@@ -33,18 +28,14 @@ public class UserService {
     }
 
     // Method to fetch all users
-public List<User> getAllUsers() {
-    return userRepository.findAll();
-}
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-public Page<User> getAllUsers(int page, int size, Sort sort) {
-    Pageable pageable = PageRequest.of(page, size, sort);
-
-
-
-    return userRepository.findAll(pageable);
-}
-
+    public Page<User> getAllUsers(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return userRepository.findAll(pageable);
+    }
 
     public List<User> getUsersByLastName(String lastName) {
         return userRepository.findByLastName(lastName);
@@ -59,30 +50,11 @@ public Page<User> getAllUsers(int page, int size, Sort sort) {
         return null;
     }
 
-    @Autowired
-    private InstructionalVideoService instructionalVideoService;
-
-@Autowired
-private YogaClassService yogaClassService;
-
-public boolean deleteUser(Long id) {
-
-    if (userRepository.existsById(id)) {
-        // Delete associated yoga classes
-        List<YogaClass> yogaClasses = yogaClassService.getYogaClassesByUserId(id);
-        for (YogaClass yogaClass : yogaClasses) {
-            yogaClassService.deleteYogaClass(yogaClass.getId());
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
         }
-        
-        // Delete associated instructional videos
-        instructionalVideoService.deleteByYogaClassId(id);
-        
-        userRepository.deleteById(id);
-        return true;
+        return false;
     }
-    return false;
-}
-
-
-
 }

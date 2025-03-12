@@ -37,11 +37,5 @@ public class User {
     private String phoneNumber;
     private String address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference  // Prevents recursion
-    private List<YogaClass> yogaClasses;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<InstructionalVideo> instructionalVideos;
 }

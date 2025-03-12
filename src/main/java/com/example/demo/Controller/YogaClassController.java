@@ -1,24 +1,15 @@
 package com.example.demo.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entity.YogaClass;
 import com.example.demo.Service.YogaClassService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/yoga-classes")
 public class YogaClassController {
-
     @Autowired
     private YogaClassService yogaClassService;
 
@@ -27,14 +18,14 @@ public class YogaClassController {
         return yogaClassService.createYogaClass(yogaClass);
     }
 
-    @GetMapping("/{id}")
-    public YogaClass getYogaClass(@PathVariable Long id) {
-        return yogaClassService.getYogaClassById(id);
-    }
-
     @GetMapping
     public List<YogaClass> getAllYogaClasses() {
         return yogaClassService.getAllYogaClasses();
+    }
+
+    @GetMapping("/{id}")
+    public YogaClass getYogaClassById(@PathVariable Long id) {
+        return yogaClassService.getYogaClassById(id).orElse(null);
     }
 
     @PutMapping("/{id}")
@@ -43,7 +34,7 @@ public class YogaClassController {
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteYogaClass(@PathVariable Long id) {
-        return yogaClassService.deleteYogaClass(id);
-    }   
+    public void deleteYogaClass(@PathVariable Long id) {
+        yogaClassService.deleteYogaClass(id);
+    }
 }
