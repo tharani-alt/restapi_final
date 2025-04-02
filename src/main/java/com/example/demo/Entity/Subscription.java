@@ -1,10 +1,10 @@
 package com.example.demo.Entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +15,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class InstructionalVideo {
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String instructorName;
+    private String price;
 
     @Column(nullable = false)
-    private String videoLink;
+    private String time;
 
     @Column(nullable = false)
-    private String sessionTiming;
-
+    private String type;
 }
